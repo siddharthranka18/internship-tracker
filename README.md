@@ -42,5 +42,5 @@ cd frontend
 npm install
 npm start
 🔗 Live Demo  
-Frontend: https://intern-track-frontend.vercel.app/
-Backend API: https://intern-track-backend-937i.onrender.com/
+Frontend:https://internship-tracker-one.vercel.app/
+Backend API:https://intern-track-backend-new.onrender.com/
