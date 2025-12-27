@@ -5,7 +5,8 @@ const mongoose=require('mongoose');
 const app = express();
 const PORT=process.env.PORT||5000;
 app.use(cors({
-    origin:"https://internship-tracker-one.vercel.app"
+    origin:true,
+    credentials:true
 }));
 app.use(express.json());
 const URI=process.env.MONGODB_URI;
