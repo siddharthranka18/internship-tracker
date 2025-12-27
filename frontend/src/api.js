@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-    // It will use the variable from Vercel/Render, 
-    // or fallback to localhost if you are testing on your laptop
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
 });
+
+console.log("API BASE URL USED:", api.defaults.baseURL);
 
 export default api;
