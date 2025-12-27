@@ -1,0 +1,101 @@
+/* src/components/InternshipForm.module.css */
+.formContainer {
+    padding: 0 2rem 2rem 2rem;
+    margin-top: 1rem;
+    text-align: left;
+    /* ADD THIS TEST LINE: */
+    border: 5px solid brightred !important;
+}
+.formContainer {
+    margin-top: 1rem;
+    text-align: left;
+    
+}
+
+/* ... the rest of your CSS is fine, keep it here ... */
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+/* ... etc ... */
+
+.label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-white);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+/* Styles for all inputs and select dropdowns */
+.input,
+.select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background-color: var(--bg-dark); /* Darker background for inputs */
+    color: var(--text-white);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    /* Ensure padding doesn't affect width */
+    box-sizing: border-box; 
+}
+
+/* Neon glow on focus */
+.input:focus,
+.select:focus {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* Fix for dropdown options to be visible */
+.select option {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    padding: 10px;
+}
+
+/* Container for the bottom buttons */
+.formActions {
+    display: flex;
+    justify-content: flex-end; /* Push buttons to the right */
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.cancelButton,
+.submitButton {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+/* Cancel button styles */
+.cancelButton {
+    background-color: transparent;
+    border: 1px solid var(--text-gray);
+    color: var(--text-gray);
+}
+.cancelButton:hover {
+    border-color: var(--text-white);
+    color: var(--text-white);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Submit button styles (Neon) */
+.submitButton {
+    background-color: var(--neon-purple);
+    color: white;
+    box-shadow: 0 0 15px rgba(217, 70, 239, 0.4);
+}
+.submitButton:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.6);
+    transform: translateY(-2px);
+}

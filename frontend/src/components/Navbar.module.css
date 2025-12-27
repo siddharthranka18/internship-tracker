@@ -1,0 +1,79 @@
+/* Existing Navbar.css code... */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--bg-dark);
+    border-bottom: 1px solid var(--neon-purple);
+    box-shadow: 0 10px 20px -15px rgba(217, 70, 239, 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    transition: padding 0.3s ease; /* Smooth transition for resizing */
+}
+.nav-name h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--text-white), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--text-white);
+    transition: font-size 0.3s ease; /* Smooth transition for resizing */
+}
+.avatar {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--neon-purple);
+    cursor: pointer;
+    transition: transform 0.2s ease, width 0.3s ease, height 0.3s ease; /* Added size transitions */
+}
+.avatar:hover {
+    transform: scale(1.05);
+}
+
+/* =========================================
+   RESPONSIVE DESIGN (Add this to the bottom)
+   ========================================= */
+
+/* For devices with a screen width of 768px or less (tablets and large phones) */
+@media (max-width: 768px) {
+    .navbar {
+        /* Reduce padding on smaller screens to save space */
+        padding: 0.8rem 1.2rem;
+    }
+
+    .nav-name h2 {
+        /* Make the brand name slightly smaller */
+        font-size: 1.3rem;
+    }
+
+    .avatar {
+        /* Make the avatar slightly smaller */
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* For devices with a screen width of 480px or less (small phones) */
+@media (max-width: 480px) {
+    .navbar {
+        /* Further reduce padding for very small screens */
+        padding: 0.6rem 1rem;
+    }
+
+    .nav-name h2 {
+        /* Further reduce font size */
+        font-size: 1.1rem;
+    }
+
+    .avatar {
+        /* Further reduce avatar size */
+        width: 38px;
+        height: 38px;
+        border-width: 1.5px; /* Slightly thinner border for a smaller icon */
+    }
+}

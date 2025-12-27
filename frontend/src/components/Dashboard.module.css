@@ -1,0 +1,103 @@
+.headercontainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    margin: 1rem;
+}
+.title{
+    margin: 0;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--text-white);
+
+}
+.controls{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+}
+.searchcompany,
+.dropdown {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background-color: var(--bg-card);
+    color: var(--text-white);
+    font-size: 0.9rem;
+    outline: none;
+    transition:  all 0.3 ease;
+}
+.searchcompany:focus,
+.dropdown:focus{
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(0,255,255,0.3);
+}
+.searchcompany{
+    min-width: 250px;
+}
+.dropdown{
+    cursor: pointer;
+}
+.addbutton{
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+
+    background-color:var(--neon-purple);
+    box-shadow: 0 0 15px rgba(217,70,239,0.4);
+    transition: all 0.2 ease;
+}
+.addbutton:hover{
+    filter: brightness(1.1);
+    box-shadow: 0 0 20px rgba (217,70,239,0.6);
+    transform: translateY(-2px);
+}
+.dropdown option {
+    background-color: var(--bg-dark); /* Force dark background */
+    color: var(--text-white); /* Force white text */
+    padding: 10px; /* Optional: adds a little breathing room */
+    border-color: var(--neon-cyan);
+}
+/* ... add this to the end of src/components/Dashboard.module.css ... */
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+/* For tablets and mobile devices (screens smaller than 768px) */
+@media (max-width: 768px) {
+    /* 1. Stack the main header container vertically */
+    .headercontainer {
+        flex-direction: column;
+        align-items: stretch; /* Make items stretch to full width */
+        gap: 1.5rem; /* Add space between title and controls */
+        padding: 1rem 0; /* Reduce top/bottom padding slightly */
+    }
+
+    /* Optional: Center the title on small screens */
+    .title {
+        text-align: center;
+        font-size: 1.5rem; /* Slightly smaller font for mobile */
+    }
+
+    /* 2. Stack the controls (search, filter, button) vertically */
+    .controls {
+        flex-direction: column;
+        align-items: stretch; /* Make items stretch to full width */
+        gap: 0.8rem; /* Add space between each control */
+    }
+
+    /* 3. Make individual controls take up 100% width */
+    .searchcompany,
+    .dropdown,
+    .addbutton {
+        width: 100%;
+        min-width: auto; /* Override the default min-width on the search bar */
+    }
+}

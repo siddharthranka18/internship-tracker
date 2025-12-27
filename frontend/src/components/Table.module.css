@@ -1,0 +1,298 @@
+/* src/components/DashboardTable.module.css */
+
+.tableContainer {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--neon-purple);
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.2);
+    overflow: hidden;
+    margin-top: 2rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+/* --- Header Styling --- */
+.table th {
+    padding: 1.2rem 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--neon-cyan);
+    border-bottom: 1px solid rgba(217, 70, 239, 0.3);
+    white-space: nowrap;
+}
+
+/* --- Row & Cell Styling --- */
+.table td {
+    padding: 1.2rem 1.5rem;
+    color: var(--text-white);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+.tableRow {
+    transition: background-color 0.2s ease;
+}
+
+.tableRow:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.companyName {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.location {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
+/* --- Actions Cell & Buttons --- */
+.actionsCell {
+    text-align: center;
+    /* Use flexbox to align buttons side-by-side with space */
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding-top: 1.5rem; /* Adjust padding for alignment */
+}
+
+/* Common styles for action buttons to reduce repetition */
+.editButton,
+.deleteButton {
+    background: none;
+    border: none;
+    color: var(--text-gray);
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0.4rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Specific styles for Edit (Pencil) */
+.editButton {
+    font-size: 1.2rem;
+}
+
+.editButton:hover {
+    color: var(--neon-cyan); /* Neon Cyan for edit */
+    background-color: rgba(0, 255, 255, 0.1);
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+}
+
+/* Specific styles for Delete (X) */
+.deleteButton {
+    font-size: 1.6rem;
+}
+
+.deleteButton:hover {
+    color: var(--neon-red); /* Neon Red for delete */
+    background-color: rgba(239, 68, 68, 0.1);
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+
+/* --- STATUS BADGES --- */
+.statusBadge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    text-transform: capitalize;
+    white-space: nowrap;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-gray);
+    border: 1px solid var(--text-gray);
+}
+
+.statusApplied {
+    color: var(--neon-blue);
+    border: 1px solid var(--neon-blue);
+    background-color: rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
+}
+
+.statusInterview {
+    color: var(--neon-yellow);
+    border: 1px solid var(--neon-yellow);
+    background-color: rgba(255, 255, 0, 0.1);
+    box-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
+}
+
+.statusRejected {
+    color: var(--neon-red);
+    border: 1px solid var(--neon-red);
+    background-color: rgba(255, 49, 49, 0.1);
+    box-shadow: 0 0 5px rgba(255, 49, 49, 0.3);
+}
+
+/* =========================================
+   RESPONSIVE TABLE STYLES (The Card View)
+   ========================================= */
+
+/* On screens smaller than 768px, convert the table into a list of cards */
+@media (max-width: 768px) {
+    /* 1. Hide the main table header */
+    .table thead {
+        display: none;
+    }
+
+    /* 2. Force table elements to behave like block elements */
+    .table, .table tbody, .table tr, .table td {
+        display: block;
+        width: 100%;
+    }
+
+    /* 3. Style each row as an individual "card" */
+    .tableRow {
+        margin-bottom: 1rem;
+        background-color: var(--bg-card); /* Use card background */
+        border: 1px solid var(--neon-purple); /* Add border */
+        border-radius: 12px; /* Rounded corners */
+        padding: 1rem; /* Inner padding for the card */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Stronger shadow for card depth */
+    }
+    /* Remove hover effect on mobile for a cleaner, static card look */
+    .tableRow:hover {
+        background-color: var(--bg-card);
+    }
+
+    /* 4. Style each cell to look like a key-value pair row within the card */
+    .table td {
+        position: relative; /* Needed for absolute positioning of the label */
+        padding-left: 40%; /* Make space for the label on the left */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Separator line between rows */
+        min-height: 40px; /* Ensure consistent height for each row */
+        padding-top: 0.8rem;
+        padding-bottom: 0.8rem;
+        text-align: left; /* Align content to the left */
+        white-space: normal; /* Allow text to wrap */
+    }
+
+    /* Remove border from the last cell in the card */
+    .table td:last-child {
+        border-bottom: none;
+    }
+
+    /* 5. Inject the label before each cell using the data-label attribute */
+    .table td::before {
+        content: attr(data-label); /* Get text from data-label attribute in JSX */
+        position: absolute;
+        left: 0;
+        top: 0; /* Align to top */
+        padding-top: 0.8rem; /* Match cell padding */
+        width: 35%; /* Width of the label area */
+        padding-left: 1rem; /* Padding from left edge */
+        font-weight: 700;
+        text-align: left;
+        color: var(--neon-cyan); /* Use neon color for labels */
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+    }
+
+    /* 6. Specific adjustments for cells on mobile */
+
+    /* Make the company name stand out more */
+    .companyName {
+        font-size: 1.2rem;
+        color: var(--text-white);
+        font-weight: 700;
+    }
+
+    /* Adjust the actions cell for buttons */
+    .actionsCell {
+        padding-top: 1rem;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        text-align: center;
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem; /* Space between the two buttons */
+        width: 100%;
+        /* Ensure there's enough height for the buttons */
+        min-height: 60px;
+        align-items: center;
+    }
+
+    /* Hide the "ACTIONS" label */
+    .actionsCell::before {
+        display: none;
+    }
+
+    /* Style the buttons on mobile */
+    .editButton, .deleteButton {
+        /* Use fixed dimensions to make them square and prevent shrinking */
+        width: 100px;
+        height: 40px;
+        padding: 0; /* Remove padding since we have fixed dimensions */
+
+        background-color: rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        /* Prevent them from shrinking */
+        flex-shrink: 0;
+
+        /* Increase font size slightly for better visibility of icons */
+        font-size: 1.2rem;
+    }
+}
+
+/* =========================================
+   STYLES FOR VERY SMALL SCREENS (e.g., < 480px)
+   ========================================= */
+
+@media (max-width: 480px) {
+    /* Change the cell layout to stack vertically to prevent overlap */
+    .table td {
+        padding-left: 1rem !important; /* Remove the large left padding */
+        padding-right: 1rem;
+        display: flex;
+        flex-direction: column; /* Stack label and content */
+        align-items: flex-start; /* Align everything to the left */
+        gap: 0.3rem; /* Add a small gap between label and content */
+        text-align: left;
+        min-height: auto; /* Allow height to adjust automatically */
+    }
+
+    /* Style the label (::before) to sit above the content */
+    .table td::before {
+        position: static; /* Make it part of the normal document flow */
+        width: auto; /* Let it take up only the space it needs */
+        padding-left: 0;
+        padding-top: 0;
+        margin-bottom: 0.1rem; /* Add a tiny space below the label */
+        font-size: 0.8rem; /* Slightly smaller font for labels */
+    }
+
+    /* Ensure the Company Name is prominent */
+    .companyName {
+        font-size: 1.1rem;
+        margin-top: 0.2rem;
+    }
+
+    /* Adjust the actions cell to keep buttons in a row */
+    .actionsCell {
+        flex-direction: row !important; /* Force buttons to be side-by-side */
+        justify-content: flex-start; /* Align buttons to the left */
+        gap: 1rem;
+        padding-top: 1rem !important;
+        padding-bottom: 0.5rem !important;
+    }
+}

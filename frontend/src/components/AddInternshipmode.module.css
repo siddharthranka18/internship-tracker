@@ -1,0 +1,97 @@
+/* src/components/AddInternshipmode.module.css */
+
+/* The dark semi-transparent background */
+.modalOverlay {
+    position: fixed;
+    top: 2rem;
+    bottom: 2rem;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    overflow: hidden;
+}
+
+/* The actual popup window container */
+.modalContent {
+    background-color: var(--bg-card);
+    /* REMOVED padding from here, moved to header and form */
+    padding: 0; 
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    /* IMPORTANT: Allow scrolling inside if form is long */
+    max-height: 100%;
+    overflow-y: auto; 
+    position: relative;
+
+    /* FIX: Only apply borders to bottom and sides */
+    border-bottom: 2px solid var(--neon-purple);
+    border-left: 2px solid var(--neon-purple);
+    border-right: 2px solid var(--neon-purple);
+    /* FIX: Only round bottom corners */
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    
+    box-shadow: 0 0 30px rgba(217, 70, 239, 0.3);
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Header section */
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    /* FIX: Add padding and top border/corners here instead */
+    padding: 1.5rem 2rem;
+    border-top: 2px solid var(--neon-purple);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    
+    border-bottom: 1px solid rgba(217, 70, 239, 0.3);
+    
+    /* Sticky positioning so it stays at top while scrolling */
+    position: sticky;
+    top: 0;
+    background-color: var(--bg-card); /* Opaque background to cover scrolling content */
+    z-index: 10;
+}
+
+.modalHeader h2 {
+    margin: 0;
+    color: var(--text-white);
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px rgba(217, 70, 239, 0.5);
+}
+
+/* The 'X' close button */
+.closeButton {
+    background: none;
+    border: none;
+    color: var(--text-gray);
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+}
+
+.closeButton:hover {
+    color: var(--neon-red);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
