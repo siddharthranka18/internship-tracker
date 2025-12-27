@@ -1,9 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
+    // Hardcode the link directly to bypass the Vercel variable issue for now
+    baseURL: "https://intern-track-backend-new.onrender.com",
 });
-
-console.log("API BASE URL USED:", api.defaults.baseURL);
 
 export default api;
