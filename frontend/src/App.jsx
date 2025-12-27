@@ -40,19 +40,20 @@ function App() {
       setStatusFilter(event.target.value);
   };
 
-  // --- FILTERING LOGIC ---
-  const filteredInternships = internships.filter(internship => {
-      const companyName = internship.company.toLowerCase();
-      const search = searchTerm.toLowerCase();
-      const matchesSearch = companyName.includes(search);
+// --- FILTERING LOGIC ---
+const filteredInternships = internships.filter(internship => {
+  // Add ?. and || '' to handle missing company names safely
+  const companyName = (internship.company || '').toLowerCase(); 
+  const search = searchTerm.toLowerCase();
+  const matchesSearch = companyName.includes(search);
 
-      const dataStatusStr = internship.status?.toLowerCase() || '';
-      const filterValueStr = statusFilter.toLowerCase();
+  const dataStatusStr = internship.status?.toLowerCase() || '';
+  const filterValueStr = statusFilter.toLowerCase();
 
-      const matchesStatus = filterValueStr === 'all' || dataStatusStr === filterValueStr;
+  const matchesStatus = filterValueStr === 'all' || dataStatusStr === filterValueStr;
 
-      return matchesSearch && matchesStatus;
-  });
+  return matchesSearch && matchesStatus;
+});
 
 
   const openModal = (internship = null) => {
