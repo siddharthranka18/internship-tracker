@@ -66,33 +66,34 @@ function App() {
   };
 
 
-  // Add Internship (Connects to Backend)
   const addInternship = async (newInternshipData) => {
-      try {
+    try {
         const dataToSend = {
             company: newInternshipData.company,
             position: newInternshipData.position,
             location: newInternshipData.location,
             status: newInternshipData.status,
-            appliedDate: newInternshipData.deadline
+            // Ensure we don't send an empty string if deadline is missing
+            appliedDate: newInternshipData.deadline || new Date().toISOString().split('T')[0]
         };
 
-        await api.post('/internships/add', dataToSend);
-
-        // Refresh data
-        const refreshResponse = await api.get('/internships');
-        const formattedData = refreshResponse.data.map(item => ({
-            ...item,
-            id: item._id,
-            deadline: item.appliedDate ? item.appliedDate.split('T')[0] : ''
-        }));
-        setInternships(formattedData);
+        const response = await api.post('/internships/add', dataToSend);
+        
+        // Use the response directly instead of a second GET call to be faster
+        const newItem = {
+            ...response.data,
+            id: response.data._id,
+            deadline: response.data.appliedDate ? response.data.appliedDate.split('T')[0] : ''
+        };
+        
+        setInternships(prev => [...prev, newItem]);
         closeModal();
-      } catch (error) {
-          console.error("Error adding internship:", error);
-          alert("Failed to add internship.");
-      }
-  }
+    } catch (error) {
+        // This will now show you EXACTLY why the backend said 400
+        console.error("Backend Error Detail:", error.response?.data);
+        alert(`Failed to add: ${error.response?.data?.message || "Check console"}`);
+    }
+}
 
   const updateInternship = async (updatedData) => {
     try {

@@ -31,22 +31,29 @@ const AddInternshipmodel = ({ onClose, onAdd, onUpdate, internshipToEdit }) => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => { // 1. Add async here
         e.preventDefault();
         if (!formData.company || !formData.position) {
             alert("Please fill in required fields.");
             return;
         }
-        if (internshipToEdit) {
-            // console.log("Updating:", formData); // Optional debug log
-            onUpdate(formData);
-        } else {
-            // console.log("Adding:", formData); // Optional debug log
-            onAdd(formData);
-        }
-        onClose();
-    }
 
+        try {
+            if (internshipToEdit) {
+                // 2. Add await to ensure the request finishes
+                await onUpdate(formData); 
+            } else {
+                // 2. Add await here too
+                await onAdd(formData); 
+            }
+            // 3. Only close the modal AFTER the request is successful
+            onClose(); 
+        } catch (error) {
+            // If the 400 error happens, the modal stays open so you can see why
+            console.error("Submission failed:", error);
+            alert("Failed to save. Check the console for details.");
+        }
+    }
     const modalJSX = (
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
