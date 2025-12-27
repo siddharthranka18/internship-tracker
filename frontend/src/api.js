@@ -1,8 +1,9 @@
-import axios from 'axios'
+import axios from 'axios';
 
 const api = axios.create({
-    // Replace localhost with your live Render URL
-    baseURL: "https://intern-track-backend-new.onrender.com",
+    // It will use the variable from Vercel/Render, 
+    // or fallback to localhost if you are testing on your laptop
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
 });
 
-export default api
+export default api;
