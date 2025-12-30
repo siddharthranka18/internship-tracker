@@ -1,11 +1,21 @@
 // src/App.jsx
+import { Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboardheader";
 import Table from "./components/Dashboardtable";
 import AddInternshipModal from './components/AddInternshipmodel';
+import Login from './components/Login'; // Make sure these files exist
+import Register from './components/Register'
 import api from './api';
-
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) return <div>Loading...</div>; // Prevent flickering
+  if (!user) return <Navigate to="/login" />; // Redirect to login
+  
+  return children;
+};
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [internshipToEdit, setInternshipToEdit] = useState(null);
@@ -13,24 +23,31 @@ function App() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [internships, setInternships] = useState([]);
 
-  // Fetch data on load
   useEffect(() => {
     const fetchInternships = async () => {
-      try {
-        const response = await api.get('/internships');
-        // Format data for frontend (map _id to id, format date)
-        const formattedData = response.data.map(item => ({
-            ...item,
-            id: item._id,
-            deadline: item.appliedDate ? item.appliedDate.split('T')[0] : ''
-        }));
-        setInternships(formattedData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+        try {
+            const response = await api.get('/internships');
+            
+            if (Array.isArray(response.data)) {
+                const formattedData = response.data.map(item => ({
+                    ...item,
+                    id: item._id,
+                    deadline: item.appliedDate ? item.appliedDate.split('T')[0] : ''
+                }));
+                setInternships(formattedData);
+            }
+        } catch (error) {
+            // Only log errors that AREN'T 401 (Unauthorized)
+            if (error.response?.status !== 401) {
+                console.error("Error fetching data:", error);
+            } else {
+                console.log("User not authenticated; skipping data fetch.");
+            }
+            setInternships([]); 
+        }
     };
     fetchInternships();
-  }, []);
+}, []);
 
   const handleSearchChange = (event) => {
       setSearchTerm(event.target.value);
@@ -68,34 +85,35 @@ const filteredInternships = internships.filter(internship => {
 
 
   const addInternship = async (newInternshipData) => {
+    // 1. FIX: Changed 'formData' to 'newInternshipData' to avoid ReferenceError
+    console.log("Sending to Backend:", newInternshipData); 
+    
     try {
         const dataToSend = {
             company: newInternshipData.company,
             position: newInternshipData.position,
             location: newInternshipData.location,
             status: newInternshipData.status,
-            // Ensure we don't send an empty string if deadline is missing
-            appliedDate: newInternshipData.deadline || new Date().toISOString().split('T')[0]
+            // 2. FIX: Use 'appliedDate' because that is the ID in your form now
+            appliedDate: newInternshipData.appliedDate || new Date().toISOString().split('T')[0]
         };
 
         const response = await api.post('/internships/add', dataToSend);
-        
-        // Use the response directly instead of a second GET call to be faster
+        setInternships();
         const newItem = {
             ...response.data,
             id: response.data._id,
+            // 3. Mapping the response back to the 'deadline' key for your UI list
             deadline: response.data.appliedDate ? response.data.appliedDate.split('T')[0] : ''
         };
         
         setInternships(prev => [...prev, newItem]);
         closeModal();
     } catch (error) {
-        // This will now show you EXACTLY why the backend said 400
         console.error("Backend Error Detail:", error.response?.data);
         alert(`Failed to add: ${error.response?.data?.message || "Check console"}`);
     }
 }
-
   const updateInternship = async (updatedData) => {
     try {
         // 1. Prepare data for backend (match schema names)
@@ -160,34 +178,43 @@ const filteredInternships = internships.filter(internship => {
     }
 }
 
+return (
+  <div>
+    <Navbar />
+    <Routes>
+      {/* The Main Dashboard Route */}
+      <Route path="/" element={
+        <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+          <Dashboard
+              onAddClick={() => openModal(null)}
+              searchTerm={searchTerm}
+              onSearchChange={handleSearchChange}
+              statusFilter={statusFilter}
+              onStatusFilterChange={handleStatusFilterChange}
+          />
+          <Table
+              data={filteredInternships}
+              onDelete={deleteInternship}
+              onEdit={openModal}
+          />
+        </main>
+      } />
 
-  return (
-    <div>
-      <Navbar />
-      <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-        <Dashboard
-            onAddClick={() => openModal(null)}
-            searchTerm={searchTerm}
-            onSearchChange={handleSearchChange}
-            statusFilter={statusFilter}
-            onStatusFilterChange={handleStatusFilterChange}
-        />
-        <Table
-            data={filteredInternships}
-            onDelete={deleteInternship}
-            onEdit={openModal}
-        />
-      </main>
-      {isModalOpen && (
-        <AddInternshipModal
-            onClose={closeModal}
-            onAdd={addInternship}
-            onUpdate={updateInternship}
-            internshipToEdit={internshipToEdit}
-        />
-      )}
-    </div>
-  );
+      {/* The New Auth Routes */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
+
+    {isModalOpen && (
+      <AddInternshipModal
+          onClose={closeModal}
+          onAdd={addInternship}
+          onUpdate={updateInternship}
+          internshipToEdit={internshipToEdit}
+      />
+    )}
+  </div>
+);
 }
 
 export default App;

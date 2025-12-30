@@ -5,65 +5,49 @@ const Internship = require('../models/internship.model');
 // ==========================================
 // ROUTE 1: GET ALL INTERNSHIPS
 // URL: GET /api/internships/
-// ==========================================
 router.route('/').get((req, res) => {
-    Internship.find()
-        .then(internships => res.json(internships))
-        .catch(err => res.status(400).json('Error: ' + err));
-});
+    // Only find internships where the 'user' field matches the logged-in person
+    Internship.find({ user: req.user.userid })
+      .then(internships => res.json(internships))
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
 
-// ==========================================
-// ROUTE 2: ADD A NEW INTERNSHIP
-// URL: POST /api/internships/add
-// ==========================================
+/// ADD NEW
 router.route('/add').post((req, res) => {
-    const company = req.body.company;
-    const position = req.body.position;
-    const location = req.body.location;
-    const status = req.body.status;
-    const appliedDate = Date.parse(req.body.appliedDate);
-
+    // 1. Destructure using the NEW names from your form
+    const { company, position, status, appliedDate, location } = req.body; 
+    const user = req.user.userid; 
+  
     const newInternship = new Internship({
+      user, 
+      company,
+      position,
+      location,
+      status,       // Now matches perfectly
+      appliedDate,  // Now matches perfectly
+    });
+  
+    newInternship.save()
+      .then(() => res.json('Internship added!'))
+      .catch(err => res.status(400).json({ message: err.message }));
+});
+// UPDATE EXISTING
+router.route('/:id').put((req, res) => {
+    const { company, position, status, deadline, location } = req.body;
+    
+    // Create an update object that matches your Model field names
+    const updateData = {
         company,
         position,
         location,
-        status,
-        appliedDate,
-    });
+        appliedDate: deadline,
+        status: status === "In Process" ? "Interviewing" : status
+    };
 
-    newInternship.save()
-        .then(() => res.json("Internship added succesfully"))
+    Internship.findByIdAndUpdate(req.params.id, updateData, { new: true })
+        .then(updated => res.json('Internship updated successfully!'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
-
-
-// ==========================================
-// ROUTE 3: UPDATE AN EXISTING INTERNSHIP
-// URL: PUT /api/internships/:id
-// ==========================================
-router.route('/:id').put((req, res) => {
-    // --- DEBUG LOGS ---
-    console.log("--------------------------------------------------");
-    console.log("Attempting direct DB update for ID:", req.params.id);
-    console.log("Data to update:", req.body);
-
-    // Use findByIdAndUpdate for a direct database operation.
-    Internship.findByIdAndUpdate(req.params.id, req.body, { new: true })
-        .then(updatedInternship => {
-            if (!updatedInternship) {
-                // If no document was found with that ID
-                console.log("❌ Error: Internship not found in DB.");
-                return res.status(404).json('Internship not found');
-            }
-            console.log("✅ SUCCESS: Database document updated!");
-            res.json('Internship updated successfully!');
-        })
-        .catch(err => {
-            console.error("❌ Database Error during update:", err);
-            res.status(400).json('Error: ' + err);
-        });
-});
-
 // ==========================================
 // ROUTE 4: DELETE AN INTERNSHIP
 // URL: DELETE /api/internships/:id

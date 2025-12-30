@@ -8,7 +8,7 @@ const initialFormState = {
     company: '',
     position: '', // Correctly uses 'position'
     location: '',
-    deadline: '',
+    appliedDate: '',
     status: 'Applied'
 };
 
@@ -88,16 +88,24 @@ const AddInternshipmodel = ({ onClose, onAdd, onUpdate, internshipToEdit }) => {
                         <input type="text" id='location' className={formStyles.input} placeholder='e.g. hyderabad' required value={formData.location || ''} onChange={handleChange} />
                     </div>
                     <div className={formStyles.formGroup}>
-                        <label htmlFor="deadline" className={formStyles.label}>Application Deadline</label>
-                        <input type="date" id='deadline' className={formStyles.input} required value={formData.deadline || ''} onChange={handleChange} />
-                    </div>
+    <label htmlFor="appliedDate" className={formStyles.label}>Application Deadline</label>
+    <input 
+        type="date" 
+        id='appliedDate' // This is the key 'handleChange' uses
+        className={formStyles.input} 
+        required 
+        value={formData.appliedDate || ''} // CHANGE THIS from .deadline to .appliedDate
+        onChange={handleChange} 
+    />
+</div>
                     <div className={formStyles.formGroup}>
                         <label htmlFor="status" className={formStyles.label}>Status</label>
                         <select id="status" className={formStyles.select} value={formData.status || 'Applied'} onChange={handleChange}>
-                            <option value="Applied">Applied</option>
-                            <option value="In Process">In Process</option>
-                            <option value="Rejected">Rejected</option>
-                        </select>
+                                <option value="Applied">Applied</option>
+                                <option value="Interviewing">Interviewing</option> {/* Add this line */}
+                                <option value="Offer Received">Offer Received</option>
+                                <option value="Rejected">Rejected</option>
+</select>
                     </div>
 
                     <div className={formStyles.formActions}>

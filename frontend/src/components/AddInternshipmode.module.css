@@ -36,7 +36,7 @@
     /* FIX: Only round bottom corners */
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
-    
+    z-index: 1001;
     box-shadow: 0 0 30px rgba(217, 70, 239, 0.3);
     animation: slideIn 0.3s ease-out;
 }
@@ -93,5 +93,25 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+/* AddInternshipmode.module.css */
+
+.modalContent {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;          /* Uses 90% of screen width on small devices */
+    max-width: 500px;    /* Prevents it from getting too large on desktop */
+    max-height: 90vh;    /* Prevents modal from being taller than the screen */
+    overflow-y: auto;    /* Adds a scrollbar if the form is too long */
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 480px) {
+    .modalContent {
+        padding: 1.5rem; /* Reduces padding on small screens */
+        width: 95%;      /* Gives even more space on tiny screens */
     }
 }
