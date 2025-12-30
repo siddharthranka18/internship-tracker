@@ -9,7 +9,7 @@ const userModel=require("./models/user")
 const app = express();
 const PORT=process.env.PORT||5000;
 app.use(cors({
-    origin:"https://my-intern-tracker.vercel.app",
+    origin:"https://internship-tracker-one.vercel.app",
     credentials:true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
