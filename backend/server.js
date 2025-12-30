@@ -59,7 +59,8 @@ app.post('/api/register', async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: true, // Set to false for localhost
-            sameSite: 'lax', 
+            sameSite: 'none', 
+            maxAge: 3600000,
             path: '/' // Ensures the cookie is available for ALL routes
         });
 
@@ -86,8 +87,9 @@ app.post('/api/login', async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             secure: true, // Set to true only if using HTTPS
-            sameSite: 'lax', // Needed for cross-origin requests on localhost
-            maxAge: 3600000 // 1 hour
+            sameSite: 'none', // Needed for cross-origin requests on localhost
+            maxAge: 3600000, // 1 hour
+            path: '/'
         });
 
         // Send back user data so the frontend can use it
